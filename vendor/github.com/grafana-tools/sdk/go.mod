@@ -1,4 +1,4 @@
-module github.com/grafana-tools/sdk
+module obeleh/grafana-api-go-sdk
 
 go 1.13
 

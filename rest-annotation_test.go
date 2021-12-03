@@ -4,7 +4,7 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/grafana-tools/sdk"
+	"obeleh/grafana-api-go-sdk"
 )
 
 func TestAnnotationOptions(t *testing.T) {

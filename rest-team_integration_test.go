@@ -3,7 +3,7 @@ package sdk_test
 import (
 	"context"
 	"fmt"
-	"github.com/grafana-tools/sdk"
+	"obeleh/grafana-api-go-sdk"
 	"testing"
 )
 

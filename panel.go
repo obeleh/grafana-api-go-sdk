@@ -184,6 +184,15 @@ type (
 			Fields string   `json:"fields"`
 			Calcs  []string `json:"calcs"`
 		} `json:"reduceOptions"`
+		ColorOptions struct {
+			Exponent float64 `json:"exponent"`
+			Fill     string  `json:"fill"`
+			Mode     string  `json:"mode"`
+			Reverse  bool    `json:"reverse"`
+			Scale    string  `json:"scale"`
+			Scheme   string  `json:"scheme"`
+			Steps    int     `json:"steps"`
+		} `json:"color,omitempty"`
 	}
 	Threshold struct {
 		// the alert threshold value, we do not omitempty, since 0 is a valid
@@ -311,7 +320,8 @@ type (
 		Collapsed bool    `json:"collapsed"`
 	}
 	HeatmapPanel struct {
-		Cards struct {
+		Options Options `json:"options"`
+		Cards   struct {
 			CardPadding *float64 `json:"cardPadding"`
 			CardRound   *float64 `json:"cardRound"`
 		} `json:"cards"`

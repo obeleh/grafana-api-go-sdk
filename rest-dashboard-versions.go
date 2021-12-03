@@ -20,14 +20,16 @@ package sdk
 */
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/url"
 	"strconv"
 	"time"
 )
 
-//Version struct that wraps GetAllDashboardVersions API Call Response of one Version
+//Version struct that wraps GetAllDashboardVersions API Call Response
 type Version struct {
 	Id            int       `json:"id"`
 	DashboardId   int       `json:"dashboardId"`
@@ -39,28 +41,29 @@ type Version struct {
 	Message       string    `json:"message"`
 }
 
-//VersionsResponse struct that wraps GetAllDashboardVersions API Call Response
-type VersionsResponse struct {
-	Versions  []Version
-}
-
 // GetAllDashboardVersions loads the first "limit" dashboard versions of a specific dashboard by id.
 //
 // Reflects GET /api/dashboards/id/:dashboardId/versions API call.
-func (r *Client) GetAllDashboardVersions(ctx context.Context, id int, limit int) (VersionsResponse, error) {
+func (r *Client) GetAllDashboardVersions(ctx context.Context, id int, limit int) ([]Version, error) {
 	var (
 		raw       []byte
-		versions  VersionsResponse
+		versions  []Version
 		code      int
 		err       error
+		requestParams = make(url.Values)
 	)
-	if raw, code, err = r.get(ctx, "/api/dashboards/id/" + strconv.Itoa(id) + "/versions?" + "limit=" + strconv.Itoa(limit), nil); err != nil {
-		return versions, err
+	requestParams.Add("limit", strconv.Itoa(limit))
+	if raw, code, err = r.get(ctx, fmt.Sprintf("/api/dashboards/id/%d/versions", id), requestParams); err != nil {
+		return nil, err
 	}
 	if code != 200 {
 		return versions, fmt.Errorf("HTTP error %d: returns %s", code, raw)
 	}
-	err = json.Unmarshal(raw, &versions)
+	dec := json.NewDecoder(bytes.NewReader(raw))
+	dec.UseNumber()
+	if err := dec.Decode(&versions); err != nil {
+		return nil, err
+	}
 	return versions, err
 }
 

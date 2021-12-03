@@ -7,7 +7,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/grafana-tools/sdk"
+	"obeleh/grafana-api-go-sdk"
 )
 
 func getDebugURL(t *testing.T) string {

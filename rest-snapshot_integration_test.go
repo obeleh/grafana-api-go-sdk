@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/grafana-tools/sdk"
+	"obeleh/grafana-api-go-sdk"
 )
 
 func Test_Snapshot_Create(t *testing.T) {
