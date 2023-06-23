@@ -317,8 +317,8 @@ type (
 		} `json:"cards"`
 		Color struct {
 			CardColor   string   `json:"cardColor"`
-			ColorScale  string   `json:"colorScale"`
-			ColorScheme string   `json:"colorScheme"`
+			ColorScale  string   `json:"scale"`
+			ColorScheme string   `json:"scheme"`
 			Exponent    float64  `json:"exponent"`
 			Min         *float64 `json:"min,omitempty"`
 			Max         *float64 `json:"max,omitempty"`
