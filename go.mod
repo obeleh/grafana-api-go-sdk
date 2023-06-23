@@ -1,4 +1,4 @@
-module github.com/NovatecConsulting/grafana-api-go-sdk
+module github.com/obeleh/grafana-api-go-sdk
 
 go 1.13
 
