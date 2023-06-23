@@ -24,7 +24,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/grafana-tools/sdk"
+	"obeleh/grafana-api-go-sdk"
 )
 
 func TestStackVal_UnmarshalJSON_GotTrue(t *testing.T) {

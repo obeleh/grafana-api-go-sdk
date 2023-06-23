@@ -37,7 +37,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/grafana-tools/sdk"
+	"obeleh/grafana-api-go-sdk"
 )
 
 func main() {

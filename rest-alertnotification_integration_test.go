@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/grafana-tools/sdk"
+	"obeleh/grafana-api-go-sdk"
 )
 
 func Test_Alertnotification_CRUD(t *testing.T) {

@@ -25,7 +25,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/grafana-tools/sdk"
+	"obeleh/grafana-api-go-sdk"
 )
 
 func TestIntString_Unmarshal(t *testing.T) {
