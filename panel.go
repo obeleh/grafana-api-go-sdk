@@ -184,6 +184,15 @@ type (
 			Fields string   `json:"fields"`
 			Calcs  []string `json:"calcs"`
 		} `json:"reduceOptions"`
+		ColorOptions struct {
+			Exponent float64 `json:"exponent"`
+			Fill     string  `json:"fill"`
+			Mode     string  `json:"mode"`
+			Reverse  bool    `json:"reverse"`
+			Scale    string  `json:"scale"`
+			Scheme   string  `json:"scheme"`
+			Steps    int     `json:"steps"`
+		} `json:"color,omitempty"`
 	}
 	Threshold struct {
 		// the alert threshold value, we do not omitempty, since 0 is a valid
@@ -311,8 +320,50 @@ type (
 		Collapsed bool    `json:"collapsed"`
 	}
 	HeatmapPanel struct {
-        JSON    json.RawMessage `json:"json"`
-        Targets []Target        `json:"targets,omitempty"`
+		Options Options `json:"options"`
+		Cards   struct {
+			CardPadding *float64 `json:"cardPadding"`
+			CardRound   *float64 `json:"cardRound"`
+		} `json:"cards"`
+		Color struct {
+			CardColor   string   `json:"cardColor"`
+			ColorScale  string   `json:"colorScale"`
+			ColorScheme string   `json:"colorScheme"`
+			Exponent    float64  `json:"exponent"`
+			Min         *float64 `json:"min,omitempty"`
+			Max         *float64 `json:"max,omitempty"`
+			Mode        string   `json:"mode"`
+		} `json:"color"`
+		DataFormat      string `json:"dataFormat"`
+		HideZeroBuckets bool   `json:"hideZeroBuckets"`
+		HighlightCards  bool   `json:"highlightCards"`
+		Legend          struct {
+			Show bool `json:"show"`
+		} `json:"legend"`
+		ReverseYBuckets bool     `json:"reverseYBuckets"`
+		Targets         []Target `json:"targets,omitempty"`
+		Tooltip         struct {
+			Show          bool `json:"show"`
+			ShowHistogram bool `json:"showHistogram"`
+		} `json:"tooltip"`
+		TooltipDecimals int `json:"tooltipDecimals"`
+		XAxis           struct {
+			Show bool `json:"show"`
+		} `json:"xAxis"`
+		XBucketNumber *float64 `json:"xBucketNumber"`
+		XBucketSize   *string  `json:"xBucketSize"`
+		YAxis         struct {
+			Decimals    *int     `json:"decimals"`
+			Format      string   `json:"format"`
+			LogBase     int      `json:"logBase"`
+			Show        bool     `json:"show"`
+			Max         *string  `json:"max"`
+			Min         *string  `json:"min"`
+			SplitFactor *float64 `json:"splitFactor"`
+		} `json:"yAxis"`
+		YBucketBound  string   `json:"yBucketBound"`
+		YBucketNumber *float64 `json:"yBucketNumber"`
+		YBucketSize   *float64 `json:"yBucketSize"`
 	}
 	TimeseriesPanel struct {
 		Targets     []Target          `json:"targets,omitempty"`
