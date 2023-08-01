@@ -52,8 +52,6 @@ type (
 		Editable        bool       `json:"editable"`
 		HideControls    bool       `json:"hideControls" graf:"hide-controls"`
 		SharedCrosshair bool       `json:"sharedCrosshair" graf:"shared-crosshair"`
-		Panels          []*Panel   `json:"panels"`
-		Rows            []*Row     `json:"rows"`
 		Templating      Templating `json:"templating"`
 		Annotations     struct {
 			List []Annotation `json:"list"`
@@ -65,6 +63,7 @@ type (
 		Time          Time        `json:"time"`
 		Timepicker    Timepicker  `json:"timepicker"`
 		GraphTooltip  int         `json:"graphTooltip,omitempty"`
+		hiddenJson    map[string]interface{}
 	}
 	Time struct {
 		From string `json:"from"`
@@ -166,19 +165,6 @@ func (h *Height) UnmarshalJSON(raw []byte) error {
 	return err
 }
 
-func NewBoard(title string) *Board {
-	boardID++
-	return &Board{
-		ID:           boardID,
-		Title:        title,
-		Style:        "dark",
-		Timezone:     "browser",
-		Editable:     true,
-		HideControls: false,
-		Rows:         []*Row{},
-	}
-}
-
 func (b *Board) AddLink(link Link) {
 	b.Links = append(b.Links, link)
 }
@@ -195,6 +181,49 @@ func (b *Board) RemoveTags(tags ...string) {
 			}
 		}
 	}
+}
+
+func (b *Board) UnmarshalJSON(raw []byte) error {
+	type TmpBoard Board
+	var tmp TmpBoard
+
+	if err := json.Unmarshal(raw, &tmp); err != nil {
+		return err
+	}
+	if err := json.Unmarshal(raw, &tmp.hiddenJson); err != nil {
+		return err
+	}
+	for k := range tmp.hiddenJson {
+		if k != "panels" && k != "rows" {
+			// remove key from hiddenJson
+			delete(tmp.hiddenJson, k)
+		}
+	}
+	*b = Board(tmp)
+	return nil
+}
+
+func (b Board) MarshalJSON() ([]byte, error) {
+	if b.ID == 0 {
+		boardID++
+		b.ID = boardID
+	}
+	type TmpBoard Board
+	tmpB := TmpBoard(b)
+	tmpJson, err := json.Marshal(tmpB)
+	if err != nil {
+		return nil, err
+	}
+	if b.hiddenJson == nil {
+		return tmpJson, nil
+	}
+	var tmp map[string]interface{}
+	if err := json.Unmarshal(tmpJson, &tmp); err != nil {
+		return nil, err
+	}
+	tmp["panels"] = b.hiddenJson["panels"]
+	tmp["rows"] = b.hiddenJson["rows"]
+	return json.Marshal(tmp)
 }
 
 func (b *Board) AddTags(tags ...string) {
@@ -218,20 +247,6 @@ func (b *Board) HasTag(tag string) bool {
 		}
 	}
 	return false
-}
-
-func (b *Board) AddRow(title string) *Row {
-	if title == "" {
-		title = "New row"
-	}
-	row := &Row{
-		Title:    title,
-		Collapse: false,
-		Editable: true,
-		Height:   "250px",
-	}
-	b.Rows = append(b.Rows, row)
-	return row
 }
 
 func (b *Board) UpdateSlug() string {
